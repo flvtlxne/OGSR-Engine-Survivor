@@ -239,24 +239,20 @@ void CUIMMShniaga::SelectBtn(int btn)
 
 void CUIMMShniaga::SelectBtn(CUIWindow* btn)
 {
-    R_ASSERT(m_page >= 0);
-    for (int i = 0; i < (int)m_buttons.size(); ++i)
+    xr_vector<CUITextWnd*>* buttons = nullptr;
+    if (epi_main == m_page)
+        buttons = &m_buttons;
+    else if (epi_new_game == m_page)
+        buttons = &m_buttons_new;
+    else
+        return;
+
+    for (int i = 0; i < (int)buttons->size(); ++i)
     {
-        if (0 == m_page)
+        if ((*buttons)[i] == btn)
         {
-            if (m_buttons[i] == btn)
-            {
-                SelectBtn(i);
-                return;
-            }
-        }
-        else if (1 == m_page)
-        {
-            if (m_buttons_new[i] == btn)
-            {
-                SelectBtn(i);
-                return;
-            }
+            SelectBtn(i);
+            return;
         }
     }
 }
@@ -299,7 +295,7 @@ void CUIMMShniaga::OnBtnClick()
 {
     if (0 == xr_strcmp("btn_new_game", m_selected->WindowName()))
         ShowNewGame();
-    else if (0 == xr_strcmp("btn_back", m_selected->WindowName()))
+    else if (0 == xr_strcmp("btn_new_back", m_selected->WindowName()) || 0 == xr_strcmp("btn_back", m_selected->WindowName()))
         ShowMain();
     else
         GetMessageTarget()->SendMessage(m_selected, BUTTON_CLICKED);
