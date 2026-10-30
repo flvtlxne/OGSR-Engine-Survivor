@@ -67,7 +67,6 @@ xr_vector<_action> actions = {
     DEF_ACTION("hide_hud", kHIDEHUD)
     DEF_ACTION("show_hud", kSHOWHUD)
 
-    {nullptr, kLASTACTION, "kLASTACTION"},
 };
 
 xr_vector<_binding> g_key_bindings;
