@@ -144,7 +144,7 @@ void CMainMenu::Activate(bool bActivate)
         if (b)
             Console->Show();
 
-        if (m_startDialog->IsShown())
+        if (m_startDialog && m_startDialog->IsShown())
             m_startDialog->HideDialog();
 
         CleanInternals();

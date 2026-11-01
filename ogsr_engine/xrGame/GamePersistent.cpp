@@ -386,8 +386,13 @@ void CGamePersistent::start_logo_intro()
     if (!allow_intro())
     {
         m_intro_event = nullptr;
-        Console->Show();
-        Console->Execute("main_menu on");
+
+        // При запуске с -start уровень уже грузится: меню поверх загрузки не открываем
+        if (!g_pGameLevel && !Engine.Event.Peek("KERNEL:start"))
+        {
+            Console->Show();
+            Console->Execute("main_menu on");
+        }
         return;
     }
 
