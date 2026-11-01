@@ -37,7 +37,7 @@ jobs:
     - name: MSBuild
       shell: cmd
       run: |
-        set APPVEYOR_BUILD_VERSION=3.${{ github.run_number }}
+        set APPVEYOR_BUILD_VERSION=3.597_CoP_Survivor
         set APPVEYOR_REPO_NAME=${{ github.repository }}
         set CONFIGURATION_GA=${{ matrix.Configuration }}
         
