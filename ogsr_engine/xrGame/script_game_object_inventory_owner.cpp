@@ -311,7 +311,9 @@ bool CScriptGameObject::MarkedDropped(CScriptGameObject* item)
     return (!!inventory_item->GetDropManual());
 }
 
-void CScriptGameObject::UnloadMagazine()
+void CScriptGameObject::UnloadMagazine() { UnloadMagazine(false); }
+
+void CScriptGameObject::UnloadMagazine(bool spawn_ammo)
 {
     CWeaponMagazined* weapon_magazined = smart_cast<CWeaponMagazined*>(&object());
     if (!weapon_magazined)
@@ -324,7 +326,7 @@ void CScriptGameObject::UnloadMagazine()
     if (stalker && stalker->hammer_is_clutched())
         return;
 
-    weapon_magazined->UnloadMagazine(false);
+    weapon_magazined->UnloadMagazine(spawn_ammo);
 }
 //
 

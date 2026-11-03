@@ -290,7 +290,8 @@ class_<CScriptGameObject> script_register_game_object2(class_<CScriptGameObject>
         .def("iterate_inventory_box", &CScriptGameObject::IterateInventoryBox)
         .def("mark_item_dropped", &CScriptGameObject::MarkItemDropped)
         .def("marked_dropped", &CScriptGameObject::MarkedDropped)
-        .def("unload_magazine", &CScriptGameObject::UnloadMagazine)
+        .def("unload_magazine", (void (CScriptGameObject::*)())&CScriptGameObject::UnloadMagazine)
+        .def("unload_magazine", (void (CScriptGameObject::*)(bool))&CScriptGameObject::UnloadMagazine)
 
         .def("sight_params", &CScriptGameObject::sight_params)
 
