@@ -203,6 +203,8 @@ private:
     void PropertiesBoxForUsing(PIItem item, bool& b_show);
     void PropertiesBoxForPlaying(PIItem item, bool& b_show);
     void PropertiesBoxForDrop(CUICellItem* cell_item, PIItem item, bool& b_show);
+    void PropertiesBoxForUnloadAll(CUICellItem* cell_item, PIItem item, bool& b_show);
+    void UnloadAllRuckWeapons();
     void PropertiesBoxForRepair(PIItem item, bool& b_show);
 
 private:

@@ -838,6 +838,8 @@ void CUIActorMenu::ActivatePropertiesBox()
     {
         PropertiesBoxForSlots(item, b_show);
         PropertiesBoxForWeapon(cell_item, item, b_show);
+        if (m_currMenuMode == mmInventory)
+            PropertiesBoxForUnloadAll(cell_item, item, b_show);
         PropertiesBoxForAddon(item, b_show);
         PropertiesBoxForUsing(item, b_show);
         PropertiesBoxForPlaying(item, b_show);
@@ -1037,6 +1039,36 @@ void CUIActorMenu::PropertiesBoxForDrop(CUICellItem* cell_item, PIItem item, boo
     }
 }
 
+// "Разрядить всё оружие": разряжает всё магазинное оружие в рюкзаке, оружие в слотах не трогает
+void CUIActorMenu::PropertiesBoxForUnloadAll(CUICellItem* cell_item, PIItem item, bool& b_show)
+{
+    if (!smart_cast<CWeaponMagazined*>(item) || cell_item->OwnerList() != m_pInventoryBagList)
+        return;
+
+    for (PIItem it : m_pActorInvOwner->inventory().m_ruck)
+    {
+        CWeaponMagazined* wm = smart_cast<CWeaponMagazined*>(it);
+        if (wm && wm->GetAmmoElapsed() > 0)
+        {
+            m_UIPropertiesBox->AddItem("st_unload_all_weapons", (void*)33, INVENTORY_UNLOAD_MAGAZINE);
+            b_show = true;
+            return;
+        }
+    }
+}
+
+void CUIActorMenu::UnloadAllRuckWeapons()
+{
+    // копия списка: разрядка может менять инвентарь (досыпает патроны в пачки, спавнит новые)
+    TIItemContainer ruck = m_pActorInvOwner->inventory().m_ruck;
+    for (PIItem it : ruck)
+    {
+        CWeaponMagazined* wm = smart_cast<CWeaponMagazined*>(it);
+        if (wm && wm->GetAmmoElapsed() > 0)
+            wm->UnloadMagazine();
+    }
+}
+
 void CUIActorMenu::PropertiesBoxForRepair(PIItem item, bool& b_show)
 {
     CCustomOutfit* pOutfit = smart_cast<CCustomOutfit*>(item);
@@ -1141,6 +1173,11 @@ void CUIActorMenu::ProcessPropertiesBoxClicked(CUIWindow* w, void* d)
         }
         break;
     case INVENTORY_UNLOAD_MAGAZINE: {
+        if (m_UIPropertiesBox->GetClickedItem()->GetData() == (void*)33)
+        {
+            UnloadAllRuckWeapons();
+            break;
+        }
         CWeaponMagazined* weap_mag = smart_cast<CWeaponMagazined*>((CWeapon*)cell_item->m_pData);
         if (!weap_mag)
         {
