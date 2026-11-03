@@ -13,6 +13,7 @@ class CUIDialogWndEx : public CUIDialogWnd, public DLL_Pure
 
 private:
     CALLBACKS m_callbacks;
+    bool m_bCenterCursor{true};
     virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = nullptr);
     SCallbackInfo* NewCallback();
 
@@ -29,6 +30,10 @@ public:
     virtual void Update();
     virtual bool OnKeyboardAction(int dik, EUIMessages keyboard_action);
     virtual bool Dispatch(int cmd, int param) { return true; }
+
+    // окно может не переставлять курсор в центр при открытии - например, при переходе из другого окна
+    virtual bool NeedCenterCursor() const override { return m_bCenterCursor; }
+    void AllowCenterCursor(bool b) { m_bCenterCursor = b; }
     
     pcstr GetDebugType() override { return typeid(*this).name(); }
 
