@@ -4,6 +4,7 @@
 #include "../Weapon.h"
 #include "UIDragDropListEx.h"
 #include "UIProgressBar.h"
+#include "UIXmlInit.h"
 
 #define INV_GRID_WIDTHF 50.0f
 #define INV_GRID_HEIGHTF 50.0f
@@ -174,6 +175,23 @@ CUIWeaponCellItem::CUIWeaponCellItem(CWeapon* itm) : inherited(itm)
     {
         m_addon_offset[eLauncher].set(object()->GetGrenadeLauncherX(), object()->GetGrenadeLauncherY());
     }
+    // значок "разряжено": узел cell_item_unloaded в actor_menu_item.xml, без узла значка нет
+    static CUIXml uiXml;
+    static bool is_xml_ready = false;
+    if (!is_xml_ready)
+    {
+        bool xml_result = uiXml.Load(CONFIG_PATH, UI_PATH, "actor_menu_item.xml");
+        R_ASSERT3(xml_result, "file parsing error ", uiXml.m_xml_file_name);
+        is_xml_ready = true;
+    }
+    if (uiXml.NavigateToNode("cell_item_unloaded", 0))
+    {
+        m_unloaded = xr_new<CUIStatic>();
+        m_unloaded->SetAutoDelete(true);
+        AttachChild(m_unloaded);
+        CUIXmlInit::InitStatic(uiXml, "cell_item_unloaded", 0, m_unloaded);
+        m_unloaded->Show(false);
+    }
 }
 
 #include "../xrServerEntities/object_broker.h"
@@ -229,6 +247,8 @@ void CUIWeaponCellItem::Draw()
 
     if (m_upgrade && m_upgrade->IsShown())
         m_upgrade->Draw();
+    if (m_unloaded && m_unloaded->IsShown())
+        m_unloaded->Draw();
 };
 
 void CUIWeaponCellItem::Update()
@@ -290,6 +310,14 @@ void CUIWeaponCellItem::Update()
             if (m_addons[eLauncher])
                 DestroyIcon(eLauncher);
         }
+    }
+    if (m_unloaded)
+    {
+        // значок "разряжено": только оружие с магазином и только в горизонтальных списках (рюкзак, ящики)
+        const bool unloaded = !Heading() && object()->GetAmmoMagSize() > 0 && object()->GetAmmoElapsed() == 0;
+        if (unloaded)
+            m_unloaded->SetWndPos(Fvector2().set(GetWndSize().x - m_unloaded->GetWndSize().x - 1.0f, 1.0f));
+        m_unloaded->Show(unloaded);
     }
 }
 
@@ -437,7 +465,9 @@ bool CUIWeaponCellItem::EqualTo(CUICellItem* itm)
         }
     }
     //	bool b_place					= ( (object()->m_eItemCurrPlace == ci->object()->m_eItemCurrPlace) );
-
+    // заряженное и разряженное оружие - в разных стаках
+    if ((object()->GetAmmoElapsed() > 0) != (ci->object()->GetAmmoElapsed() > 0))
+        return false;
     return true;
 }
 

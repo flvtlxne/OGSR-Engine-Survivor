@@ -1176,23 +1176,23 @@ void CUIActorMenu::ProcessPropertiesBoxClicked(CUIWindow* w, void* d)
         if (m_UIPropertiesBox->GetClickedItem()->GetData() == (void*)33)
         {
             UnloadAllRuckWeapons();
+            if (m_currMenuMode == mmInventory)
+                InitInventoryContents(m_pInventoryBagList); // пересобираем стаки: заряженное и разряженное лежат отдельно
             break;
         }
+        // "разрядить" - один ствол из стака (первый заряженный), всё сразу - "разрядить всё оружие"
         CWeaponMagazined* weap_mag = smart_cast<CWeaponMagazined*>((CWeapon*)cell_item->m_pData);
+        for (u32 i = 0; (!weap_mag || weap_mag->GetAmmoElapsed() == 0) && i < cell_item->ChildsCount(); ++i)
+        {
+            weap_mag = smart_cast<CWeaponMagazined*>((CWeapon*)cell_item->Child(i)->m_pData);
+        }
         if (!weap_mag)
         {
             break;
         }
         weap_mag->UnloadMagazine();
-        for (u32 i = 0; i < cell_item->ChildsCount(); ++i)
-        {
-            CUICellItem* child_itm = cell_item->Child(i);
-            CWeaponMagazined* child_weap_mag = smart_cast<CWeaponMagazined*>((CWeapon*)child_itm->m_pData);
-            if (child_weap_mag)
-            {
-                child_weap_mag->UnloadMagazine();
-            }
-        }
+        if (m_currMenuMode == mmInventory)
+            InitInventoryContents(m_pInventoryBagList); // пересобираем стаки: заряженное и разряженное лежат отдельно
         break;
     }
     case INVENTORY_REPAIR: {
