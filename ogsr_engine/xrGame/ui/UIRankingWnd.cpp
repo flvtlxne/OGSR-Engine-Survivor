@@ -173,6 +173,8 @@ void CUIRankingWnd::add_achievement(CUIXml& xml, shared_str const& achiev_id)
     achievement->SetIcon(pSettings->r_string(achiev_id, "icon"));
     achievement->SetFunctor(pSettings->r_string(achiev_id, "functor"));
     achievement->SetRepeatable(!!READ_IF_EXISTS(pSettings, r_bool, achiev_id, "repeatable", false));
+    if (pSettings->line_exist(achiev_id, "progress_functor"))
+        achievement->SetProgressFunctor(pSettings->r_string(achiev_id, "progress_functor"));
 
     m_achieves_vec.push_back(achievement);
 }

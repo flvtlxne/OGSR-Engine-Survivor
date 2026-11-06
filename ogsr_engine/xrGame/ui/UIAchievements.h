@@ -19,6 +19,13 @@ private:
     UIHint* m_hint;
     string128 m_functor_str;
     bool m_repeat;
+    // Survivor: progress hint for not yet received achievements
+    string128 m_progress_functor_str;
+    shared_str m_hint_text;
+    shared_str m_progress_text;
+    u32 m_name_color;
+    u32 m_descr_color;
+    bool m_locked;
 
 public:
     CUIAchievements(CUIScrollView* parent);
@@ -33,10 +40,12 @@ public:
     void SetIcon(LPCSTR icon);
     void SetFunctor(LPCSTR func);
     void SetRepeatable(bool repeat);
+    void SetProgressFunctor(LPCSTR func);
 
     virtual void DrawHint();
     virtual void Reset();
 
 protected:
     bool ParentHasMe();
+    void SetLocked(bool locked);
 };
