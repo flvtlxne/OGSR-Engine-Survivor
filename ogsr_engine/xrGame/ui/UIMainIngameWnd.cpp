@@ -1113,9 +1113,11 @@ void CUIMainIngameWnd::UpdateBoosterIndicators(const xr_map<EBoostParams, SBoost
                 m_ind_boost_thirst->ResetColorAnimation();
         }
         break;
-        }
-    }
-void CUIMainIngameWnd::LayoutIndicators()
+           }
+       }
+   }
+
+   void CUIMainIngameWnd::LayoutIndicators()
 {
     if (!m_row_enabled)
         return;
@@ -1152,5 +1154,4 @@ void CUIMainIngameWnd::LayoutIndicators()
     CUIStatic* boosts[] = {m_ind_boost_psy, m_ind_boost_radia, m_ind_boost_chem, m_ind_boost_wound, m_ind_boost_weight, m_ind_boost_health, m_ind_boost_power, m_ind_boost_rad, m_ind_boost_satiety, m_ind_boost_thirst};
     for (CUIStatic* s : boosts)
         place(s);
-}
 }
