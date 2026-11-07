@@ -33,6 +33,11 @@ void UILoadingScreen::Initialize()
 
     const auto loadBackground = [&] { UIHelper::CreateStatic(uiXml, "background", this, false); };
 
+    // Survivor: картинка уровня может рисоваться под фоном (under_background="1")
+    const bool logoUnderBackground = uiXml.NavigateToNodeWithAttribute("loading_logo", "under_background", "1") != nullptr;
+    if (logoUnderBackground)
+        loadingLogo = UIHelper::CreateStatic(uiXml, "loading_logo", this, false);
+
     const auto node = uiXml.NavigateToNodeWithAttribute("loading_progress", "under_background", "0");
     if (node)
     {
@@ -49,7 +54,8 @@ void UILoadingScreen::Initialize()
         loadBackground();
     }
 
-    loadingLogo = UIHelper::CreateStatic(uiXml, "loading_logo", this, false);
+    if (!logoUnderBackground)
+        loadingLogo = UIHelper::CreateStatic(uiXml, "loading_logo", this, false);
     loadingProgressPercent = UIHelper::CreateStatic(uiXml, "loading_progress_percent", this, false);
     loadingStage = UIHelper::CreateStatic(uiXml, "loading_stage", this, false);
 
