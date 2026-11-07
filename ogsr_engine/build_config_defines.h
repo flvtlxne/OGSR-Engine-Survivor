@@ -61,7 +61,8 @@
 #define ANIMATED_PHYSICS_OBJECT_SUPPORT
 
 //Разрешение сторон скриншота для сохранений. По умолчанию было 128х128 вроде б. У нас 768х768
-constexpr size_t GAMESAVE_SIZE{128};
+constexpr size_t GAMESAVE_WIDTH{640};
+constexpr size_t GAMESAVE_HEIGHT{360};
 
 //Отключает поддержку DiscordRPC
 //#define DISABLE_DISCORD

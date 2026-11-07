@@ -80,7 +80,7 @@ void CRender::ScreenshotImpl(ScreenshotMode mode, LPCSTR name)
     break;
     case IRender_interface::SM_FOR_GAMESAVE: {
         ScratchImage SImageSmall{};
-        CHK_DX(Resize(*SImage.GetImage(0, 0, 0), GAMESAVE_SIZE, GAMESAVE_SIZE, TEX_FILTER_DEFAULT, SImageSmall));
+        CHK_DX(Resize(*SImage.GetImage(0, 0, 0), GAMESAVE_WIDTH, GAMESAVE_HEIGHT, TEX_FILTER_DEFAULT, SImageSmall));
 
         HRESULT hr;
 

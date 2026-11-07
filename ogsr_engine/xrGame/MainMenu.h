@@ -86,6 +86,7 @@ public:
     void SetNeedVidRestart();
     virtual void OnDeviceReset();
     LPCSTR GetEngineVersion() { return Core.GetEngineVersion(); }
+    bool IsGameSaveScreenshot() const { return !!m_Flags.test(flGameSaveScreenshot); }
 
     pcstr GetDebugType() override { return "CMainMenu"; }
     bool FillDebugTree(const CUIDebugState& debugState) override;

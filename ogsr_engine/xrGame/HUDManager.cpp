@@ -180,6 +180,10 @@ void CHUDManager::OnFrame()
     if (!b_online)
         return;
 
+    // Survivor: превью сохранения снимается без интерфейса
+    if (MainMenu() && MainMenu()->IsGameSaveScreenshot())
+        return;
+
     if (pUIGame)
         pUIGame->OnFrame();
 
