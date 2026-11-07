@@ -45,6 +45,12 @@ protected:
     CUIStatic* m_ind_helmet_broken;
     CUIStatic* m_ind_outfit_broken;
     CUIStatic* m_ind_overweight;
+    // Survivor: state icons in one row, <indicators_row> in maingame.xml
+    bool m_row_enabled{};
+    Fvector2 m_row_pos{};
+    float m_row_gap{};
+    float m_row_boost_gap{};
+    xr_vector<shared_str> m_row_custom;
 
 public:
     CUIStatic* m_ind_boost_psy;
@@ -136,6 +142,8 @@ public:
     void ReceiveNews(GAME_NEWS_DATA* news);
     void UpdateMainIndicators();
     void UpdateBoosterIndicators(const xr_map<EBoostParams, SBooster> influences);
+
+    void LayoutIndicators();
 
     virtual bool OnKeyboardPress(int dik);
 

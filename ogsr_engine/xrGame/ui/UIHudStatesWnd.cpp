@@ -20,6 +20,7 @@
 #include "../ai/monsters/basemonster/base_monster.h"
 #include "../PDA.h"
 #include "WeaponMagazinedWGrenade.h"
+#include "../string_table.h"
 
 CUIHudStatesWnd::CUIHudStatesWnd() : m_b_force_update(true), m_timer_1sec(0), m_last_health(0.0f), m_radia_self(0.0f), m_radia_hit(0.0f)
 {
@@ -115,6 +116,7 @@ void CUIHudStatesWnd::InitFromXml(CUIXml& xml, LPCSTR path)
     m_ui_weapon_bag_ammo = UIHelper::CreateStatic(xml, "static_bag_ammo", this, false);
     m_fire_mode = UIHelper::CreateStatic(xml, "static_fire_mode", this, false);
     m_ui_grenade = UIHelper::CreateStatic(xml, "static_grenade", this, false);
+    m_ui_ammo_name = UIHelper::CreateStatic(xml, "static_ammo_name", this, false);
 
     if (m_ui_weapon_icon = UIHelper::CreateStatic(xml, "static_wpn_icon", this, false))
     {
@@ -372,10 +374,20 @@ void CUIHudStatesWnd::UpdateActiveItemInfo(CActor* actor)
             m_ui_weapon_bag_ammo->SetText(m_item_info.bag_ammo.c_str());
         }
         if (m_fire_mode)
-        {
-            m_fire_mode->Show(true);
-            m_fire_mode->SetText(m_item_info.fire_mode.c_str());
-        }
+          {
+              m_fire_mode->Show(true);
+              // Survivor: readable mode from "st_fire_mode_<mode>" when the string table has it
+              string64 fm_id;
+              xr_sprintf(fm_id, "st_fire_mode_%s", m_item_info.fire_mode.c_str());
+              const shared_str fm_text = CStringTable().translate(fm_id);
+              const bool has_text = m_item_info.fire_mode.size() && xr_strcmp(fm_text.c_str(), fm_id) != 0;
+              m_fire_mode->SetText(has_text ? fm_text.c_str() : m_item_info.fire_mode.c_str());
+          }
+          if (m_ui_ammo_name)
+          {
+              m_ui_ammo_name->Show(true);
+              m_ui_ammo_name->SetText(m_item_info.name.c_str());
+          }
         if (m_ui_grenade)
         {
             m_ui_grenade->Show(true);
@@ -417,6 +429,8 @@ void CUIHudStatesWnd::UpdateActiveItemInfo(CActor* actor)
             m_fire_mode->Show(false);
         if (m_ui_grenade)
             m_ui_grenade->Show(false);
+        if (m_ui_ammo_name)
+            m_ui_ammo_name->Show(false);
     }
 }
 

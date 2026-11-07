@@ -105,6 +105,7 @@ public:
     StaticDrawableWrapper* AddCustomStatic(LPCSTR id, bool bSingleInstance);
     StaticDrawableWrapper* GetCustomStatic(LPCSTR id);
     void RemoveCustomStatic(LPCSTR id);
+    const xr_vector<StaticDrawableWrapper*>& GetCustomStatics() const { return m_custom_statics; }
 
     void CommonMessageOut(LPCSTR text);
 

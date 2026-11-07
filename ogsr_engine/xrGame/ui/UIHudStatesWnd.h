@@ -36,6 +36,7 @@ private:
     CUIStatic* m_ui_weapon_sign_ammo;
     CUIStatic* m_fire_mode;
     CUIStatic* m_ui_grenade;
+    CUIStatic* m_ui_ammo_name{};
     II_BriefInfo m_item_info;
 
     CUIStatic* m_ui_weapon_icon;
@@ -103,6 +104,7 @@ public:
     float get_main_sensor_value() { return m_radia_hit; }
 
     void DrawZoneIndicators();
+    CUIStatic* GetZoneIndicator(ALife::EInfluenceType type) const { return m_indik[type]; }
     void FakeUpdateIndicatorType(u8 t, float power);
     void EnableFakeIndicators(bool enable);
 

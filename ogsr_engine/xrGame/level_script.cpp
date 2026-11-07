@@ -333,6 +333,9 @@ void show_indicators()
     psActorFlags.set(AF_GODMODE_RT, FALSE);
 }
 
+// Survivor: HUD indicators are drawn now (no cutscene, dialog, scope or hud_draw 0)
+static bool game_indicators_shown() { return CurrentGameUI() && CurrentGameUI()->GameIndicatorsShown() && psHUD_Flags.is(HUD_DRAW | HUD_DRAW_RT); }
+
 static void show_weapon(const bool b)
 {
     // Simp: пусть так будет что ли
@@ -759,6 +762,7 @@ void CLevel::script_register(lua_State* L)
         def("hide_indicators_safe", &hide_indicators_safe),
 
         def("show_indicators", &show_indicators), def("show_weapon", &show_weapon),
+        def("game_indicators_shown", &game_indicators_shown),
         def("add_call", ((CPHCommanderScripts::CPHCallScript* (*)(const luabind::functor<bool>&, const luabind::functor<void>&)) & add_call)),
         def("add_call", ((CPHCommanderScripts::CPHCallScript* (*)(const luabind::object&, const luabind::functor<bool>&, const luabind::functor<void>&)) & add_call)),
         def("add_call", ((CPHCommanderScripts::CPHCallScript* (*)(const luabind::object&, LPCSTR, LPCSTR)) & add_call)),

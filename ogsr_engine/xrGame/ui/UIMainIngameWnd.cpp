@@ -169,6 +169,18 @@ void CUIMainIngameWnd::Init()
     m_ind_boost_power->Show(false);
     m_ind_boost_rad->Show(false);
 
+    if (uiXml.NavigateToNode("indicators_row", 0))
+    {
+        m_row_enabled = true;
+        m_row_pos.set(uiXml.ReadAttribFlt("indicators_row", 0, "x", 0.f), uiXml.ReadAttribFlt("indicators_row", 0, "y", 0.f));
+        m_row_gap = uiXml.ReadAttribFlt("indicators_row", 0, "gap", 2.f);
+        m_row_boost_gap = uiXml.ReadAttribFlt("indicators_row", 0, "boost_gap", 8.f);
+        LPCSTR custom = uiXml.ReadAttrib("indicators_row", 0, "custom", "");
+        string256 item;
+        for (u32 i = 0, n = _GetItemCount(custom); i < n; ++i)
+            m_row_custom.emplace_back(_GetItem(custom, i, item));
+    }
+
     UIWeaponJammedIcon = UIHelper::CreateStatic(uiXml, "weapon_jammed_static", nullptr);
     UIWeaponJammedIcon->Show(false);
 
@@ -302,6 +314,17 @@ void CUIMainIngameWnd::Update()
     UIZoneMap->Update();
 
     UpdatePickUpItem();
+
+    // Survivor: quick slots only while Tab is held (the engine shows "main_task" then)
+    const bool show_quick = CurrentGameUI()->GetCustomStatic("main_task") != nullptr;
+    for (CUIStatic* s : m_quick_slots_icons)
+        s->Show(show_quick);
+    m_QuickSlotText1->Show(show_quick);
+    m_QuickSlotText2->Show(show_quick);
+    m_QuickSlotText3->Show(show_quick);
+    m_QuickSlotText4->Show(show_quick);
+
+    LayoutIndicators();
 
     if (Device.dwFrame % 10)
         return;
@@ -617,6 +640,8 @@ void CUIMainIngameWnd::UpdateMainIndicators()
 
     UpdateQuickSlots();
 
+    UpdateBoosterIndicators(pActor->conditions().GetCurBoosterInfluences());
+
     CurrentGameUI()->PdaMenu().UpdateRankingWnd();
 
     u8 flags = 0;
@@ -874,6 +899,13 @@ void CUIMainIngameWnd::DrawMainIndicatorsForInventory()
     UpdateQuickSlots();
     UpdateBoosterIndicators(pActor->conditions().GetCurBoosterInfluences());
 
+    for (CUIStatic* s : m_quick_slots_icons)
+        s->Show(true);
+    m_QuickSlotText1->Show(true);
+    m_QuickSlotText2->Show(true);
+    m_QuickSlotText3->Show(true);
+    m_QuickSlotText4->Show(true);
+
     for (int i = 0; i < 4; i++)
         m_quick_slots_icons[i]->Draw();
 
@@ -1083,4 +1115,42 @@ void CUIMainIngameWnd::UpdateBoosterIndicators(const xr_map<EBoostParams, SBoost
         break;
         }
     }
+void CUIMainIngameWnd::LayoutIndicators()
+{
+    if (!m_row_enabled)
+        return;
+
+    float x = m_row_pos.x;
+    auto place = [&](CUIWindow* w) {
+        if (!w || !w->IsShown())
+            return;
+        Fvector2 pos;
+        pos.set(x, m_row_pos.y);
+        w->SetWndPos(pos);
+        x += w->GetWidth() + m_row_gap;
+    };
+
+    CUIStatic* states[] = {m_ind_bleeding, m_ind_radiation, m_ind_starvation, m_ind_thirst, m_ind_overweight, m_ind_helmet_broken, m_ind_outfit_broken, m_ind_weapon_broken};
+    for (CUIStatic* s : states)
+        place(s);
+
+    // statics from ui_custom_msgs.xml named in "custom": stress, notebook...; hidden together with the HUD
+    const bool hud_on = CurrentGameUI()->GameIndicatorsShown() && psHUD_Flags.is(HUD_DRAW | HUD_DRAW_RT);
+    for (const shared_str& prefix : m_row_custom)
+        for (StaticDrawableWrapper* st : CurrentGameUI()->GetCustomStatics())
+            if (st->IsActual() && strstr(st->m_name.c_str(), prefix.c_str()) == st->m_name.c_str())
+            {
+                st->m_static->Show(hud_on);
+                place(st->m_static);
+            }
+
+    for (int t = ALife::infl_rad; t <= ALife::infl_psi; ++t)
+        place(m_ui_hud_states->GetZoneIndicator(ALife::EInfluenceType(t)));
+
+    if (x > m_row_pos.x)
+        x += m_row_boost_gap;
+    CUIStatic* boosts[] = {m_ind_boost_psy, m_ind_boost_radia, m_ind_boost_chem, m_ind_boost_wound, m_ind_boost_weight, m_ind_boost_health, m_ind_boost_power, m_ind_boost_rad, m_ind_boost_satiety, m_ind_boost_thirst};
+    for (CUIStatic* s : boosts)
+        place(s);
+}
 }
