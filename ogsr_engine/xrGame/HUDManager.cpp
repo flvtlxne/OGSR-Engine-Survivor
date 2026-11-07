@@ -180,10 +180,6 @@ void CHUDManager::OnFrame()
     if (!b_online)
         return;
 
-    // Survivor: превью сохранения снимается без интерфейса
-    if (MainMenu() && MainMenu()->IsGameSaveScreenshot())
-        return;
-
     if (pUIGame)
         pUIGame->OnFrame();
 
@@ -286,6 +282,10 @@ extern ENGINE_API BOOL bShowPauseString;
 void CHUDManager::RenderUI()
 {
     if (!b_online)
+        return;
+
+    // Survivor: превью сохранения снимается без интерфейса
+    if (MainMenu() && MainMenu()->IsGameSaveScreenshot())
         return;
 
     {
