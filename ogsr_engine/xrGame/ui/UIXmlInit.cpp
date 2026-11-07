@@ -1319,6 +1319,9 @@ bool CUIXmlInit::InitComboBox(CUIXml& xml_doc, LPCSTR path, int index, CUIComboB
     pWnd->SetListLength(xml_doc.ReadAttribInt(path, index, "list_length", 4));
 
     InitWindow(xml_doc, path, index, pWnd);
+    // Survivor: профиль скроллбара выпадающего списка из XML
+    if (LPCSTR profile = xml_doc.ReadAttrib(path, index, "scroll_profile", nullptr))
+        pWnd->m_list_box.SetScrollBarProfile(profile);
     pWnd->InitComboBox(pWnd->GetWndPos(), pWnd->GetWidth());
     InitOptionsItem(xml_doc, path, index, pWnd);
 
@@ -1332,6 +1335,9 @@ bool CUIXmlInit::InitComboBox(CUIXml& xml_doc, LPCSTR path, int index, CUIComboB
     //.	pWnd->SetFont				(pFont);
     pWnd->m_list_box.SetFont(pFont);
     pWnd->m_list_box.SetTextColor(color);
+    // Survivor: текущее значение тем же шрифтом, что и список
+    if (pFont)
+        pWnd->m_text.SetFont(pFont);
 
     xr_strconcat(_path, path, ":text_color:e");
     if (xml_doc.NavigateToNode(_path, index))

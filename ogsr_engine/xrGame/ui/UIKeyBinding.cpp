@@ -32,6 +32,17 @@ void CUIKeyBinding::InitFromXml(CUIXml& xml_doc, LPCSTR path)
     FillUpList(xml_doc, path);
 }
 
+// Survivor: клавиши пишутся шрифтом и цветом подписи действия
+static void SurvStyleKeyBind(CUIEditKeyBind* kb, CUIStatic* item)
+{
+    CUILines* src = item->TextItemControl();
+    CUILines* dst = kb->TextItemControl();
+    dst->SetFont(src->GetFont());
+    dst->SetTextColor(src->GetTextColor());
+    dst->SetVTextAlignment(valCenter);
+    dst->m_TextOffset.x = 6.0f;
+}
+
 void CUIKeyBinding::FillUpList(CUIXml& xml_doc_ui, LPCSTR path_ui)
 {
     string256 buf;
@@ -82,6 +93,7 @@ void CUIKeyBinding::FillUpList(CUIXml& xml_doc_ui, LPCSTR path_ui)
             CUIEditKeyBind* pEditKB = xr_new<CUIEditKeyBind>(true);
             pEditKB->SetAutoDelete(true);
             pEditKB->InitKeyBind(Fvector2().set(item_pos, 0.0f), Fvector2().set(item_width, pItem->GetWndSize().y));
+            SurvStyleKeyBind(pEditKB, pItem);
             pEditKB->AssignProps(exe, "key_binding");
             pItem->AttachChild(pEditKB);
 
@@ -90,6 +102,7 @@ void CUIKeyBinding::FillUpList(CUIXml& xml_doc_ui, LPCSTR path_ui)
             pEditKB = xr_new<CUIEditKeyBind>(false);
             pEditKB->SetAutoDelete(true);
             pEditKB->InitKeyBind(Fvector2().set(item_pos, 0.0f), Fvector2().set(item_width, pItem->GetWndSize().y));
+            SurvStyleKeyBind(pEditKB, pItem);
             pEditKB->AssignProps(exe, "key_binding");
             pItem->AttachChild(pEditKB);
         }
