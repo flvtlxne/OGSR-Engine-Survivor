@@ -428,6 +428,8 @@ void CGamePersistent::game_loaded()
             m_game_params.m_e_game_type == eGameIDSingle)
         {
             pApp->LoadForceFinish(); // hack
+            // Survivor: этап загрузки убирается, его место занимает «Нажмите любую клавишу»
+            pApp->SetLoadStageTitle("");
             VERIFY(nullptr == m_intro);
             m_intro = xr_new<CUISequencer>();
             m_intro->m_on_destroy_event.bind(this, &CGamePersistent::update_game_loaded);
