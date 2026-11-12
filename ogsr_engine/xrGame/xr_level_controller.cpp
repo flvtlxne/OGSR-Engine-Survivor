@@ -280,7 +280,7 @@ void remap_keys()
         if (res)
             kb.key_local_name = buff;
         else
-            kb.key_local_name = kb.key_name;
+            kb.key_local_name = kb.key_name + (kb.key_name[0] == 'k' ? 1 : 0); // Survivor: "F", not "kF", when the layout name is not ASCII
 
         ++idx;
     }
