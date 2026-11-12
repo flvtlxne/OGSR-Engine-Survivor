@@ -159,6 +159,7 @@ void CUIZoneMap::Update()
         }
 
         m_Counter_text->SetText(text_str);
+        m_Counter->Show(text_str[0] != '\0'); // Survivor: no icon without contacts
     }
 
     UpdateRadar(Device.vCameraPosition);
