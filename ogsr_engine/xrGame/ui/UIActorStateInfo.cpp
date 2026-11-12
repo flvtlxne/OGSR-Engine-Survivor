@@ -84,6 +84,12 @@ void ui_actor_state_wnd::UpdateActorInfo(CInventoryOwner* owner)
     float value = 0.0f;
 
     value = actor->conditions().GetHealth();
+    if (m_health_value) // Survivor: health number next to the bar
+    {
+        string16 buf;
+        xr_sprintf(buf, "%d", iFloor(value * 100.0f + 0.5f));
+        m_health_value->SetText(buf);
+    }
     value = floor(value * 55) / 55; // number of sticks in progress bar
     // show bleeding iconl
     m_state[stt_health]->set_progress(value);

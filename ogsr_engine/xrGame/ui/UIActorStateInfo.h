@@ -19,6 +19,7 @@ class CUIXml;
 class UI_Arrow;
 class CInventoryOwner;
 class CActor;
+class CUITextWnd;
 
 class ui_actor_state_item;
 
@@ -47,6 +48,7 @@ private:
     };
     ui_actor_state_item* m_state[stt_count];
     UIHint* m_hint_wnd;
+    CUITextWnd* m_health_value{}; // Survivor: health number next to the bar
 
 public:
     ui_actor_state_wnd();

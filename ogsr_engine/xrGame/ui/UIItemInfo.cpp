@@ -243,6 +243,11 @@ void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem,
         }
         UICost->Show(true);
     }
+    else if (UICost && pInvItem->IsUsingCondition()) // Survivor: no trade in the mod, the line shows the condition
+    {
+        UICost->SetText(std::format("{} {}%", CStringTable().translate("st_surv_condition").c_str(), iFloor(pInvItem->GetCondition() * 100.0f + 0.5f)).c_str());
+        UICost->Show(true);
+    }
     else
         UICost->Show(false);
 

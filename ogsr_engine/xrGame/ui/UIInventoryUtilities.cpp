@@ -430,10 +430,10 @@ void InventoryUtilities::UpdateWeightStr(CUITextWnd& wnd, CUITextWnd& wnd_max, C
     float max = pInvOwner->MaxCarryWeight();
 
     LPCSTR kg_str = CStringTable().translate("st_kg").c_str();
-    xr_sprintf(buf, "%.1f %s", total, kg_str);
+    xr_sprintf(buf, "%.1f", total); // Survivor: "22.1 / 50.0 kg"
     wnd.SetText(buf);
 
-    xr_sprintf(buf, "(max %.1f %s)", max, kg_str);
+    xr_sprintf(buf, "/ %.1f %s", max, kg_str);
     wnd_max.SetText(buf);
 }
 
