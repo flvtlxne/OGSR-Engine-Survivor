@@ -98,6 +98,7 @@ protected:
     CUIDragDropListEx* m_pInventoryBeltList;
     CUIDragDropListEx* m_pInventoryPistolList;
     CUIDragDropListEx* m_pInventoryAutomaticList;
+    CUIDragDropListEx* m_pInventorySidearmList; // Survivor: pistol slot
     CUIDragDropListEx* m_pInventoryOutfitList;
     CUIDragDropListEx* m_pInventoryHelmetList;
     CUIDragDropListEx* m_pInventoryDetectorList;
@@ -119,6 +120,7 @@ protected:
 
     CUIStatic* m_InvSlot2Highlight;
     CUIStatic* m_InvSlot3Highlight;
+    CUIStatic* m_SidearmSlotHighlight;
     CUIStatic* m_HelmetSlotHighlight;
     CUIStatic* m_OutfitSlotHighlight;
     CUIStatic* m_DetectorSlotHighlight;
@@ -146,6 +148,7 @@ protected:
 
     CUIProgressBar* m_WeaponSlot1_progress;
     CUIProgressBar* m_WeaponSlot2_progress;
+    CUIProgressBar* m_Sidearm_progress;
     CUIProgressBar* m_Helmet_progress;
     CUIProgressBar* m_Outfit_progress;
     // bottom ---------------------------------
