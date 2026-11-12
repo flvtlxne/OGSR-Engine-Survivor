@@ -254,6 +254,8 @@ EDDListType CUIActorMenu::GetListType(CUIDragDropListEx* l)
         return iActorSlot;
     if (l == m_pInventoryPistolList)
         return iActorSlot;
+    if (l == m_pInventorySidearmList && m_pInventorySidearmList != nullptr)
+        return iActorSlot;
     if (l == m_pInventoryOutfitList)
         return iActorSlot;
     if (l == m_pInventoryHelmetList && m_pInventoryHelmetList != nullptr)
@@ -421,6 +423,8 @@ void CUIActorMenu::clear_highlight_lists()
         m_InvSlot2Highlight->Show(false);
     if (m_InvSlot3Highlight)
         m_InvSlot3Highlight->Show(false);
+    if (m_SidearmSlotHighlight)
+        m_SidearmSlotHighlight->Show(false);
     if (m_HelmetSlotHighlight)
         m_HelmetSlotHighlight->Show(false);
     if (m_OutfitSlotHighlight)
@@ -474,6 +478,11 @@ void CUIActorMenu::highlight_item_slot(CUICellItem* cell_item)
     CArtefact* artefact = smart_cast<CArtefact*>(item);
 
     u16 slot_id = item->BaseSlot();
+    if (weapon && slot_id == PISTOL_SLOT && m_SidearmSlotHighlight)
+    {
+        m_SidearmSlotHighlight->Show(true);
+        return;
+    }
     if (weapon && (slot_id == INV_SLOT_2 || slot_id == INV_SLOT_3))
     {
 		if (m_InvSlot2Highlight)
@@ -764,6 +773,8 @@ void CUIActorMenu::ClearAllLists()
     m_pInventoryDetectorList->ClearAll(true);
     m_pInventoryPistolList->ClearAll(true);
     m_pInventoryAutomaticList->ClearAll(true);
+    if (m_pInventorySidearmList)
+        m_pInventorySidearmList->ClearAll(true);
     if (m_pQuickSlot)
         m_pQuickSlot->ClearAll(true);
 
@@ -839,6 +850,11 @@ void CUIActorMenu::UpdateConditionProgressBars()
         m_WeaponSlot2_progress->SetProgressPos(iCeil(itm->GetCondition() * 15.0f) / 15.0f);
     else
         m_WeaponSlot2_progress->SetProgressPos(0);
+    if (m_Sidearm_progress)
+    {
+        itm = m_pActorInvOwner->inventory().ItemFromSlot(PISTOL_SLOT);
+        m_Sidearm_progress->SetProgressPos(itm ? iCeil(itm->GetCondition() * 15.0f) / 15.0f : 0.0f);
+    }
 
     itm = m_pActorInvOwner->inventory().ItemFromSlot(OUTFIT_SLOT);
     if (itm)

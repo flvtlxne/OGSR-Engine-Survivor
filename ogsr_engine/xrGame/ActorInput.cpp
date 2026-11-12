@@ -59,7 +59,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
     {
     case kWPN_FIRE: {
         u16 slot = inventory().GetActiveSlot();
-        if (inventory().ActiveItem() && (slot == INV_SLOT_3 || slot == INV_SLOT_2))
+        if (inventory().ActiveItem() && (slot == INV_SLOT_3 || slot == INV_SLOT_2 || slot == PISTOL_SLOT))
             mstate_wishful &= ~mcSprint;
 
         NET_Packet P;
@@ -494,6 +494,7 @@ static u16 SlotsToCheck[] =
     KNIFE_SLOT, // 0
     INV_SLOT_2, // 1
     INV_SLOT_3, // 2
+    PISTOL_SLOT, // Survivor
     GRENADE_SLOT, // 3
     ARTEFACT_SLOT, // 10
 };
@@ -527,6 +528,8 @@ void CActor::OnNextWeaponSlot()
             {
                 IR_OnKeyboardPress(kARTEFACT);
             }
+            else if (SlotsToCheck[i] == GRENADE_SLOT) // Survivor: grenades have their own key
+                IR_OnKeyboardPress(kWPN_GRENADE);
             else
                 IR_OnKeyboardPress(kWPN_1 + i);
             return;
@@ -563,6 +566,8 @@ void CActor::OnPrevWeaponSlot()
             {
                 IR_OnKeyboardPress(kARTEFACT);
             }
+            else if (SlotsToCheck[i] == GRENADE_SLOT) // Survivor: grenades have their own key
+                IR_OnKeyboardPress(kWPN_GRENADE);
             else
                 IR_OnKeyboardPress(kWPN_1 + i);
             return;

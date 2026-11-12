@@ -575,7 +575,9 @@ void CInventoryItem::net_Export(NET_Packet& P) { P.w_u8(0); };
 
 void CInventoryItem::load(IReader& packet)
 {
+    const u16 base_slot = m_ItemCurrPlace.base_slot_id; // Survivor: base slot comes from the config, not from the save
     m_ItemCurrPlace.value = packet.r_u16();
+    m_ItemCurrPlace.base_slot_id = base_slot;
     m_fCondition = packet.r_float();
 
     //--	load_data( m_upgrades, packet );

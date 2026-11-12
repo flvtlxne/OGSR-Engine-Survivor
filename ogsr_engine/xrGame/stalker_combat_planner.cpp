@@ -178,11 +178,11 @@ void CStalkerCombatPlanner::finalize()
 
     //	object().sound().remove_active_sounds					(eStalkerSoundMaskNoDanger);
 
-    if (object().inventory().ItemFromSlot(INV_SLOT_2))
+    if (object().inventory().ItemFromSlot(PISTOL_SLOT))
     {
-        CWeaponMagazined* temp = smart_cast<CWeaponMagazined*>(object().inventory().ItemFromSlot(INV_SLOT_2));
+        CWeaponMagazined* temp = smart_cast<CWeaponMagazined*>(object().inventory().ItemFromSlot(PISTOL_SLOT));
         if (object().inventory().ActiveItem() && temp && (object().inventory().ActiveItem()->object().ID() == temp->ID()))
-            object().set_goal(eObjectActionIdle, object().inventory().ItemFromSlot(INV_SLOT_2));
+            object().set_goal(eObjectActionIdle, object().inventory().ItemFromSlot(PISTOL_SLOT));
     }
 }
 

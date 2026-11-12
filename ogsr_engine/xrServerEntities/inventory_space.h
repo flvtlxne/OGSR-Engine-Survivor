@@ -19,6 +19,7 @@ enum
     TORCH_SLOT, // torch
     ARTEFACT_SLOT, // artefact
     HELMET_SLOT,
+    PISTOL_SLOT, // Survivor: own pistol slot (13), key 4
     SLOTS_COUNT
 };
 

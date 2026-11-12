@@ -95,6 +95,8 @@ void CUIActorMenu::Construct()
         m_InvSlot2Highlight->Show(false);
     if (m_InvSlot3Highlight = UIHelper::CreateStatic(uiXml, "inv_slot3_highlight", this, false))
         m_InvSlot3Highlight->Show(false);
+    if (m_SidearmSlotHighlight = UIHelper::CreateStatic(uiXml, "sidearm_slot_highlight", this, false))
+        m_SidearmSlotHighlight->Show(false);
     if (m_HelmetSlotHighlight = UIHelper::CreateStatic(uiXml, "helmet_slot_highlight", this, false))
         m_HelmetSlotHighlight->Show(false);
     if (m_OutfitSlotHighlight = UIHelper::CreateStatic(uiXml, "outfit_slot_highlight", this, false))
@@ -147,6 +149,7 @@ void CUIActorMenu::Construct()
     m_pInventoryDetectorList = UIHelper::CreateDragDropListEx(uiXml, "dragdrop_detector", this);
     m_pInventoryPistolList = UIHelper::CreateDragDropListEx(uiXml, "dragdrop_pistol", this);
     m_pInventoryAutomaticList = UIHelper::CreateDragDropListEx(uiXml, "dragdrop_automatic", this);
+    m_pInventorySidearmList = UIHelper::CreateDragDropListEx(uiXml, "dragdrop_sidearm", this, false);
     m_pTradeActorBagList = UIHelper::CreateDragDropListEx(uiXml, "dragdrop_actor_trade_bag", this);
     m_pTradeActorList = UIHelper::CreateDragDropListEx(uiXml, "dragdrop_actor_trade", this);
     m_pTradePartnerBagList = UIHelper::CreateDragDropListEx(uiXml, "dragdrop_partner_bag", this);
@@ -185,6 +188,7 @@ void CUIActorMenu::Construct()
 
     m_WeaponSlot1_progress = UIHelper::CreateProgressBar(uiXml, "progess_bar_weapon1", this, false);
     m_WeaponSlot2_progress = UIHelper::CreateProgressBar(uiXml, "progess_bar_weapon2", this, false);
+    m_Sidearm_progress = UIHelper::CreateProgressBar(uiXml, "progess_bar_sidearm", this, false);
     m_Helmet_progress = UIHelper::CreateProgressBar(uiXml, "progess_bar_helmet", this, false);
     m_Outfit_progress = UIHelper::CreateProgressBar(uiXml, "progess_bar_outfit", this, false);
 
@@ -255,6 +259,8 @@ void CUIActorMenu::Construct()
     BindDragDropListEvents(m_pInventoryBeltList);
     BindDragDropListEvents(m_pInventoryPistolList);
     BindDragDropListEvents(m_pInventoryAutomaticList);
+    if (m_pInventorySidearmList)
+        BindDragDropListEvents(m_pInventorySidearmList);
     BindDragDropListEvents(m_pInventoryOutfitList);
     if (m_pInventoryHelmetList)
         BindDragDropListEvents(m_pInventoryHelmetList);

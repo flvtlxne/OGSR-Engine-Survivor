@@ -68,6 +68,7 @@ enum EGameActions
 
     kHIDEHUD,
     kSHOWHUD,
+    kWPN_GRENADE, // Survivor: grenades on their own key
 
     kLASTACTION = u32(-3),
     kNOTBINDED = u32(-2),

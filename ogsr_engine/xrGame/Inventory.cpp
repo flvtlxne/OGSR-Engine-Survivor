@@ -142,6 +142,15 @@ void CInventory::Take(CGameObject* pObj, bool bNotActivate, bool strict_placemen
     if (!strict_placement)
         pIItem->m_ItemCurrPlace.type = eItemPlaceUndefined;
 
+    // Survivor: old saves keep pistols in the weapon slots 2/3, move them to the pistol slot
+    if (pIItem->m_ItemCurrPlace.type == eItemPlaceSlot && pIItem->BaseSlot() == PISTOL_SLOT && pIItem->m_ItemCurrPlace.slot_id != PISTOL_SLOT)
+    {
+        if (ItemFromSlot(PISTOL_SLOT))
+            pIItem->m_ItemCurrPlace.type = eItemPlaceRuck;
+        else
+            pIItem->m_ItemCurrPlace.slot_id = PISTOL_SLOT;
+    }
+    
     bool result = false;
     switch (pIItem->m_ItemCurrPlace.type)
     {
@@ -584,10 +593,18 @@ bool CInventory::Action(u16 cmd, u32 flags)
         b_send_event = true;
 
         u16 slot = u16(cmd - kWPN_1 + 1);
+        if (slot == GRENADE_SLOT) // Survivor: key 4 is the pistol, grenades have their own key
+            slot = PISTOL_SLOT;
         if (flags & CMD_START)
         {
             ActiveWeapon(slot);
         }
+    }
+    break;
+    case kWPN_GRENADE: { // Survivor
+        b_send_event = true;
+        if (flags & CMD_START)
+            ActiveWeapon(GRENADE_SLOT);
     }
     break;
     case kARTEFACT: {

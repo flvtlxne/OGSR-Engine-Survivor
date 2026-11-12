@@ -47,6 +47,8 @@ void CUIActorMenu::InitInventoryMode()
     m_pInventoryDetectorList->Show(true);
     m_pInventoryPistolList->Show(true);
     m_pInventoryAutomaticList->Show(true);
+    if (m_pInventorySidearmList)
+        m_pInventorySidearmList->Show(true);
     if (m_pQuickSlot)
         m_pQuickSlot->Show(true);
 
@@ -243,7 +245,8 @@ void CUIActorMenu::OnInventoryAction(PIItem pItem, u16 action_type)
     {
         m_pInventoryBeltList, 
         m_pInventoryPistolList, 
-        m_pInventoryAutomaticList, 
+        m_pInventoryAutomaticList,
+        m_pInventorySidearmList,
         m_pInventoryOutfitList, 
         m_pInventoryHelmetList, 
         m_pInventoryDetectorList, 
@@ -407,6 +410,7 @@ void CUIActorMenu::InitInventoryContents(CUIDragDropListEx* pBagList)
     // Slots
     InitCellForSlot(INV_SLOT_2);
     InitCellForSlot(INV_SLOT_3);
+    InitCellForSlot(PISTOL_SLOT);
     InitCellForSlot(OUTFIT_SLOT);
     InitCellForSlot(DETECTOR_SLOT);
     InitCellForSlot(GRENADE_SLOT);
@@ -714,6 +718,8 @@ CUIDragDropListEx* CUIActorMenu::GetSlotList(u16 slot_idx)
 
     case INV_SLOT_3: return m_pInventoryAutomaticList; break;
 
+    case PISTOL_SLOT: return m_pInventorySidearmList; break;
+
     case OUTFIT_SLOT: return m_pInventoryOutfitList; break;
 
     case HELMET_SLOT: return m_pInventoryHelmetList; break;
@@ -973,7 +979,7 @@ void CUIActorMenu::PropertiesBoxForAddon(PIItem item, bool& b_show)
         return; // не аддон ни одного из поддерживаемых типов
 
     CInventory* inv = &m_pActorInvOwner->inventory();
-    PIItem slots[] = {inv->ItemFromSlot(INV_SLOT_2), inv->ItemFromSlot(INV_SLOT_3)};
+    PIItem slots[] = {inv->ItemFromSlot(INV_SLOT_2), inv->ItemFromSlot(INV_SLOT_3), inv->ItemFromSlot(PISTOL_SLOT)};
 
     for (PIItem slot_item : slots)
     {
