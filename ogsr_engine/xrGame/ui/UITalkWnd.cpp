@@ -19,6 +19,7 @@
 #include "../../xr_3da/CameraBase.h"
 #include "UIXmlInit.h"
 #include "UI3tButton.h"
+#include "UIActorMenu.h"
 
 CUITalkWnd::CUITalkWnd()
 {
@@ -224,7 +225,14 @@ void CUITalkWnd::Update()
     }
 }
 
-void CUITalkWnd::Draw() { inherited::Draw(); }
+void CUITalkWnd::Draw()
+{
+    // Survivor: торговля и мастерская открываются поверх разговора, под ними его не рисуем
+    CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
+    if (pGameSP && pGameSP->ActorMenu().IsShown())
+        return;
+    inherited::Draw();
+}
 
 void CUITalkWnd::Show(bool status)
 {
