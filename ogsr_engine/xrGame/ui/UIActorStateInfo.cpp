@@ -69,6 +69,7 @@ void ui_actor_state_wnd::init_from_xml(CUIXml& xml, LPCSTR path)
     m_state[stt_fire_wound]->init_from_xml(xml, "fire_wound_sensor");
     m_state[stt_shock]->init_from_xml(xml, "shock_sensor");
     m_state[stt_power]->init_from_xml(xml, "power_sensor");
+    m_health_value = UIHelper::CreateTextWnd(xml, "health_value", this, false); // Survivor
 
     xml.SetLocalRoot(stored_root);
 }
