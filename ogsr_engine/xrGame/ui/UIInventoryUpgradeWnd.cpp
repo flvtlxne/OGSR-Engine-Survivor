@@ -93,6 +93,8 @@ void CUIInventoryUpgradeWnd::Init()
 
     m_btn_repair = UIHelper::Create3tButton(uiXml, "repair_button", this);
 
+    m_condition_text = UIHelper::CreateTextWnd(uiXml, "condition_text", this, false); // Survivor
+
     LoadCellsBacks(uiXml);
     LoadSchemes(uiXml);
 }
@@ -160,7 +162,22 @@ void CUIInventoryUpgradeWnd::Show(bool status)
     UpdateAllUpgrades();
 }
 
-void CUIInventoryUpgradeWnd::Update() { inherited::Update(); }
+void CUIInventoryUpgradeWnd::Update()
+{
+    inherited::Update();
+    if (m_condition_text) // Survivor: item condition under the repair button
+    {
+        const int cond = m_inv_item ? iFloor(m_inv_item->GetCondition() * 100.0f + 0.5f) : -1;
+        if (cond != m_condition_value)
+        {
+            m_condition_value = cond;
+            string64 buf{};
+            if (cond >= 0)
+                xr_sprintf(buf, "%s %d%%", CStringTable().translate("st_surv_condition").c_str(), cond);
+            m_condition_text->SetText(buf);
+        }
+    }
+}
 
 void CUIInventoryUpgradeWnd::Reset()
 {

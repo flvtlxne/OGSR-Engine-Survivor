@@ -93,6 +93,8 @@ private:
 
 public:
     CUI3tButton* m_btn_repair;
+    CUITextWnd* m_condition_text{}; // Survivor: item condition under the repair button
+    int m_condition_value{-1};
 
 protected:
     CUIStatic* m_background;
