@@ -28,9 +28,9 @@ CUIInventoryCellItem::CUIInventoryCellItem(CInventoryItem* itm)
 
     m_grid_size.set(itm->GetInvGridRect().rb);
     Frect rect;
-    rect.lt.set(INV_GRID_WIDTHF * itm->GetInvGridRect().x1, INV_GRID_HEIGHTF * itm->GetInvGridRect().y1);
+    rect.lt.set(INV_ICON_CELL * itm->GetInvGridRect().x1, INV_ICON_CELL * itm->GetInvGridRect().y1);
 
-    rect.rb.set(rect.lt.x + INV_GRID_WIDTHF * m_grid_size.x, rect.lt.y + INV_GRID_HEIGHTF * m_grid_size.y);
+    rect.rb.set(rect.lt.x + INV_ICON_CELL * m_grid_size.x, rect.lt.y + INV_ICON_CELL * m_grid_size.y);
 
     inherited::SetTextureRect(rect);
     inherited::SetStretchTexture(true);
@@ -369,10 +369,11 @@ void CUIWeaponCellItem::InitAddon(CUIStatic* s, LPCSTR section, Fvector2 addon_o
     cell_size.x = pSettings->r_u32(section, "inv_grid_width") * INV_GRID_WIDTHF;
     cell_size.y = pSettings->r_u32(section, "inv_grid_height") * INV_GRID_HEIGHTF;
 
-    tex_rect.x1 = pSettings->r_u32(section, "inv_grid_x") * INV_GRID_WIDTHF;
-    tex_rect.y1 = pSettings->r_u32(section, "inv_grid_y") * INV_GRID_HEIGHTF;
-
-    tex_rect.rb.add(tex_rect.lt, cell_size);
+    // Survivor: в атласе ячейка INV_ICON_CELL пикселей, размер и смещение аддона на иконке - в ячейках по 50
+    tex_rect.x1 = pSettings->r_u32(section, "inv_grid_x") * INV_ICON_CELL;
+    tex_rect.y1 = pSettings->r_u32(section, "inv_grid_y") * INV_ICON_CELL;
+    tex_rect.x2 = tex_rect.x1 + cell_size.x * INV_ICON_CELL / INV_GRID_WIDTHF;
+    tex_rect.y2 = tex_rect.y1 + cell_size.y * INV_ICON_CELL / INV_GRID_HEIGHTF;
 
     cell_size.mul(base_scale);
 

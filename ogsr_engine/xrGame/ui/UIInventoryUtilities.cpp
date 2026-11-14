@@ -265,6 +265,12 @@ const ui_shader& InventoryUtilities::GetEquipmentIconsShader()
     return *g_EquipmentIconsShader;
 }
 
+float InventoryUtilities::IconCellSize()
+{
+    static const float size = READ_IF_EXISTS(pSettings, r_float, "features", "icon_equipments_cell_size", INV_GRID_WIDTH);
+    return size;
+}
+
 const ui_shader& InventoryUtilities::GetMPCharIconsShader()
 {
     if (!g_MPCharIconsShader)

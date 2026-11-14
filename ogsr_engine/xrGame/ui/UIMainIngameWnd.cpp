@@ -589,8 +589,8 @@ void CUIMainIngameWnd::UpdatePickUpItem()
     float scale = scale_x < scale_y ? scale_x : scale_y;
 
     Frect texture_rect;
-    texture_rect.lt.set(m_iXPos * INV_GRID_WIDTH, m_iYPos * INV_GRID_HEIGHT);
-    texture_rect.rb.set(m_iGridWidth * INV_GRID_WIDTH, m_iGridHeight * INV_GRID_HEIGHT);
+    texture_rect.lt.set(m_iXPos * INV_ICON_CELL, m_iYPos * INV_ICON_CELL);
+    texture_rect.rb.set(m_iGridWidth * INV_ICON_CELL, m_iGridHeight * INV_ICON_CELL);
     texture_rect.rb.add(texture_rect.lt);
     UIPickUpItemIcon->GetStaticItem()->SetTextureRect(texture_rect);
     UIPickUpItemIcon->SetStretchTexture(true);
@@ -859,10 +859,10 @@ void CUIMainIngameWnd::UpdateQuickSlots()
                 CUIStatic* main_slot = m_quick_slots_icons[i];
                 main_slot->SetShader(InventoryUtilities::GetEquipmentIconsShader());
                 Frect texture_rect;
-                texture_rect.x1 = pSettings->r_float(item_name, "inv_grid_x") * INV_GRID_WIDTH;
-                texture_rect.y1 = pSettings->r_float(item_name, "inv_grid_y") * INV_GRID_HEIGHT;
-                texture_rect.x2 = pSettings->r_float(item_name, "inv_grid_width") * INV_GRID_WIDTH;
-                texture_rect.y2 = pSettings->r_float(item_name, "inv_grid_height") * INV_GRID_HEIGHT;
+                texture_rect.x1 = pSettings->r_float(item_name, "inv_grid_x") * INV_ICON_CELL;
+                texture_rect.y1 = pSettings->r_float(item_name, "inv_grid_y") * INV_ICON_CELL;
+                texture_rect.x2 = pSettings->r_float(item_name, "inv_grid_width") * INV_ICON_CELL;
+                texture_rect.y2 = pSettings->r_float(item_name, "inv_grid_height") * INV_ICON_CELL;
                 texture_rect.rb.add(texture_rect.lt);
                 main_slot->SetTextureRect(texture_rect);
                 main_slot->TextureOn();

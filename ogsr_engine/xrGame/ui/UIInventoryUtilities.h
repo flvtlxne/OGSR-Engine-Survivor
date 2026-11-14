@@ -11,6 +11,14 @@ class CUITextWnd;
 #define INV_GRID_WIDTH 50.0f
 #define INV_GRID_HEIGHT 50.0f
 
+// Survivor: размер ячейки в атласе иконок предметов (ui_icon_equipment) в пикселях, [features] icon_equipments_cell_size.
+// INV_GRID_WIDTH и INV_GRID_HEIGHT остаются размером ячейки на экране.
+namespace InventoryUtilities
+{
+float IconCellSize();
+}
+#define INV_ICON_CELL InventoryUtilities::IconCellSize()
+
 // размеры сетки в текстуре иконок персонажей
 #define ICON_GRID_WIDTH 64.0f
 #define ICON_GRID_HEIGHT 64.0f

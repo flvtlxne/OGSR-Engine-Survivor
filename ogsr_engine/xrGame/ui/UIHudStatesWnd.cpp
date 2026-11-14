@@ -444,19 +444,21 @@ void CUIHudStatesWnd::SetAmmoIcon(const shared_str& sect_name)
     m_ui_weapon_icon->Show(true);
 
     Frect texture_rect;
-    texture_rect.x1 = pSettings->r_float(sect_name, "inv_grid_x") * INV_GRID_WIDTH;
-    texture_rect.y1 = pSettings->r_float(sect_name, "inv_grid_y") * INV_GRID_HEIGHT;
-    texture_rect.x2 = pSettings->r_float(sect_name, "inv_grid_width") * INV_GRID_WIDTH;
-    texture_rect.y2 = pSettings->r_float(sect_name, "inv_grid_height") * INV_GRID_HEIGHT;
+    texture_rect.x1 = pSettings->r_float(sect_name, "inv_grid_x") * INV_ICON_CELL;
+    texture_rect.y1 = pSettings->r_float(sect_name, "inv_grid_y") * INV_ICON_CELL;
+    texture_rect.x2 = pSettings->r_float(sect_name, "inv_grid_width") * INV_ICON_CELL;
+    texture_rect.y2 = pSettings->r_float(sect_name, "inv_grid_height") * INV_ICON_CELL;
     texture_rect.rb.add(texture_rect.lt);
     m_ui_weapon_icon->GetUIStaticItem().SetTextureRect(texture_rect);
     m_ui_weapon_icon->SetStretchTexture(true);
 
-    float h = texture_rect.height() * 0.8f;
-    float w = texture_rect.width() * 0.8f;
+    // Survivor: размер на экране считается в ячейках по 50, а не в пикселях атласа
+    const float k = INV_GRID_WIDTH / INV_ICON_CELL;
+    float h = texture_rect.height() * k * 0.8f;
+    float w = texture_rect.width() * k * 0.8f;
 
     // now perform only width scale for ammo, which (W)size >2
-    if (texture_rect.width() > 2.01f * INV_GRID_WIDTH)
+    if (texture_rect.width() * k > 2.01f * INV_GRID_WIDTH)
         w = INV_GRID_WIDTH * 1.5f;
 
     m_ui_weapon_icon->SetWidth(w * UI().get_current_kx());

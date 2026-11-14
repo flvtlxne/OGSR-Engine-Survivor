@@ -197,15 +197,15 @@ void CUIWpnParams::SetInfo(CInventoryItem* slot_wpn, CInventoryItem& cur_wpn)
 
     m_stAmmoType1.SetShader(InventoryUtilities::GetEquipmentIconsShader());
     Frect tex_rect;
-    tex_rect.x1 = float(pSettings->r_u32(ammo_types[0].c_str(), "inv_grid_x") * INV_GRID_WIDTH);
-    tex_rect.y1 = float(pSettings->r_u32(ammo_types[0].c_str(), "inv_grid_y") * INV_GRID_HEIGHT);
-    tex_rect.x2 = float(pSettings->r_u32(ammo_types[0].c_str(), "inv_grid_width") * INV_GRID_WIDTH);
-    tex_rect.y2 = float(pSettings->r_u32(ammo_types[0].c_str(), "inv_grid_height") * INV_GRID_HEIGHT);
+    tex_rect.x1 = float(pSettings->r_u32(ammo_types[0].c_str(), "inv_grid_x") * INV_ICON_CELL);
+    tex_rect.y1 = float(pSettings->r_u32(ammo_types[0].c_str(), "inv_grid_y") * INV_ICON_CELL);
+    tex_rect.x2 = float(pSettings->r_u32(ammo_types[0].c_str(), "inv_grid_width") * INV_ICON_CELL);
+    tex_rect.y2 = float(pSettings->r_u32(ammo_types[0].c_str(), "inv_grid_height") * INV_ICON_CELL);
     tex_rect.rb.add(tex_rect.lt);
     m_stAmmoType1.SetTextureRect(tex_rect);
     m_stAmmoType1.TextureOn();
     m_stAmmoType1.SetStretchTexture(true);
-    m_stAmmoType1.SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx(), tex_rect.y2 - tex_rect.y1));
+    m_stAmmoType1.SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * INV_GRID_WIDTH / INV_ICON_CELL * UI().get_current_kx(), (tex_rect.y2 - tex_rect.y1) * INV_GRID_HEIGHT / INV_ICON_CELL));
 
     m_stAmmoType2.SetShader(InventoryUtilities::GetEquipmentIconsShader());
     if (ammo_types.size() == 1)
@@ -223,7 +223,7 @@ void CUIWpnParams::SetInfo(CInventoryItem* slot_wpn, CInventoryItem& cur_wpn)
     m_stAmmoType2.SetTextureRect(tex_rect);
     m_stAmmoType2.TextureOn();
     m_stAmmoType2.SetStretchTexture(true);
-    m_stAmmoType2.SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * UI().get_current_kx(), tex_rect.y2 - tex_rect.y1));
+    m_stAmmoType2.SetWndSize(Fvector2().set((tex_rect.x2 - tex_rect.x1) * INV_GRID_WIDTH / INV_ICON_CELL * UI().get_current_kx(), (tex_rect.y2 - tex_rect.y1) * INV_GRID_HEIGHT / INV_ICON_CELL));
 }
 
 bool CUIWpnParams::Check(const shared_str& wpn_section)
