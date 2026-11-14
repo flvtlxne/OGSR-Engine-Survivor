@@ -139,6 +139,12 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
         float BoneArmor = ba * GetCondition();
         if (/*!fis_zero(ba, EPS) && */ (ap > BoneArmor))
         {
+            // Survivor: пробившая броню пуля теряет силу по броне, как у NPC и мутантов
+            float d_hit_power = (ap - BoneArmor) / ap;
+            if (d_hit_power < m_boneProtection->m_fHitFracActor)
+                d_hit_power = m_boneProtection->m_fHitFracActor;
+
+            NewHitPower *= d_hit_power;
             VERIFY(NewHitPower >= 0.0f);
         }
         else
